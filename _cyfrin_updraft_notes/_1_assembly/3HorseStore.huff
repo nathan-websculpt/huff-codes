@@ -1,0 +1,24 @@
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0xE0 shr      // [function_selector]
+
+    // What costs less gas is if -- once we get the Function Selector, like this(0x00 calldataload 0xE0 shr) --
+    // is if we duplicate the function_selector before we do any checking
+    // so that there is always a Function Selector on the stack
+
+
+    // updateHorseNumber function selector
+    dup1                       // [function_selector, function_selector]
+    0xcdfead2e                 // [0xcdfead2e, function_selector, function_selector]
+    eq                         // [true_if_func_selector_matches, function_selector]   
+    // jump to updateHorseNumber code if true  
+    
+    updateJump                 // [updateHorseNumberProgramCounter, true/false, function_selector]
+    jumpi                      // [function_selector]   .... if true, jump to updateHorseNumberProgramCounter
+    // IF you don't jump, you will stillhave the function_selector on the stack
+
+    // define Program Counter for a certain macro ... syntactic sugar for 'JUMPDEST'
+    updateJump:
+        SET_NUMBER_OF_HORSES()
+}
+
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}

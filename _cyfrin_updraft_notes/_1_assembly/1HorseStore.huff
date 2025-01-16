@@ -1,0 +1,25 @@
+// send calldata -> function dispatch -> function
+
+// 60008060093d393df3 -> Contract Creation Bytecode
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00                // [0]
+    calldataload        // [calldata (32 bytes)]
+
+    // SHR example _______>
+    // 0b100000010
+    // 100000010 >> 2 = 
+    //  01000000
+    // SHR example: shift off the two on the right, and move everything over
+    // cast to-base 0b01000000 hex
+    // result: 0x40
+    // _____________________________>
+
+
+    // SHR everything but the function selector from the calldata
+    // "we have calldata at the bottom of our stack - 
+    // the value we want to shift... "
+    // SHR 224 bits (or 0xe0 ) ... what's left after func selector
+    0xE0                // [0xe0, calldata (32 bytes)]
+    shr                 // [Function selector]
+}
