@@ -29,9 +29,6 @@
     //      2. give it a storage slot
     //      3. sstore opcode
 
-    // top of the stack will tell you where to put it
-    // [what-to-store, location-to-store-it]
-
     0x04                                    // [4]
     calldataload                            // [value] .... calldata minus function_selector
     [NUMBER_OF_HORSES_STORAGE_SLOT]         // [ptr, value] ... storage slot ... 0x00 ... where we are storing our data
