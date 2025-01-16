@@ -1,0 +1,21 @@
+// Code cleanup before making interface
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0xE0 shr              // [function_selector]
+    // updateNumberOfHorses, 0xcdfead2e
+    dup1 0xcdfead2e eq updateJump jumpi     // [function_selector]
+    
+    // readNumberOfHorses, 0xe026c017
+    0xe026c017 eq readJump jumpi            // []   
+
+    0x00 0x00 revert 
+
+    updateJump:
+        SET_NUMBER_OF_HORSES()
+    readJump:
+        GET_NUMBER_OF_HORSES()
+}
+
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
+
+#define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){}
