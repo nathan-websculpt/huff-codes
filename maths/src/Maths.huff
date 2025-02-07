@@ -2,9 +2,33 @@
 #define function initValues() nonpayable returns()
 #define function addValues() nonpayable returns()
 
+#define constant X_STORAGE_SLOT = FREE_STORAGE_POINTER()
+#define constant Y_STORAGE_SLOT = FREE_STORAGE_POINTER()
+#define constant Z_STORAGE_SLOT = FREE_STORAGE_POINTER()
+
 // 60028060093d393df35f35
 // 18 * 4 = 72 // 0x48
 #define macro MAIN() = takes(0) returns(0) {
     0x00 calldataload 0x48 shr      // [func selector]
+
+    dup1 __FUNC_SIG(initValues) eq initValsJump jumpi
+
+    __FUNC_SIG(addValues) eq addValsJump jumpi
+
+    0x00 0x00 revert
+
+    initValsJump:
+        INIT_VALUES()
+    addValsJump:
+        ADD_VALUES()
 }
 // 60058060093d393df35f3560481c
+
+#define macro INIT_VALUES() = takes(0) returns(0) {
+
+}
+
+#define macro ADD_VALUES() = takes(0) returns(0) {
+
+}
+
