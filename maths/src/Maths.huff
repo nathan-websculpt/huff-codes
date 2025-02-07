@@ -1,0 +1,10 @@
+// interface
+#define function initValues() nonpayable returns()
+#define function addValues() nonpayable returns()
+
+// 60028060093d393df35f35
+// 18 * 4 = 72 // 0x48
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0x48 shr      // [func selector]
+}
+// 60058060093d393df35f3560481c

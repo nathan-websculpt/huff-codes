@@ -8,12 +8,13 @@ import {HuffDeployer} from "foundry-huff/HuffDeployer.sol";
 //              remappings = ['foundry-huff/=lib/foundry-huff/src']
 
 contract HorseStoreSolc is Base_TestV1 {
+    string public constant HORSE_STORE_HUFF_LOCATION = "horseStoreV1/HorseStore";
+    //^^^ assumes you are in SRC, and does NOT look for a '.huff'
+
     function setUp() public override {
         //huff edition
         //this way both huff and sol tests can run at once
-
-        string public constant HORSE_STORE_HUFF_LOCATION = "horseStoreV1/HorseStore";
-        //^^^ assumes you are in SRC, and does NOT look for a '.huff'
+        
         horseStore = HorseStore(HuffDeployer.config().deploy(HORSE_STORE_HUFF_LOCATION));
     }
 }
