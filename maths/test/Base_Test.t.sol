@@ -28,4 +28,36 @@ abstract contract Base_Test is Test {
         assertEq(maths.readY(), 10);
         assertEq(maths.readZ(), 30);
     }
+
+    function testSubValues() public {
+        maths.initValues();
+        maths.subValues();
+        assertEq(maths.readX(), 20);
+        assertEq(maths.readY(), 10);
+        assertEq(maths.readZ(), 10);
+    }
+
+    function testMulValues() public {
+        maths.initValues();
+        maths.multiplyValues();
+        assertEq(maths.readX(), 20);
+        assertEq(maths.readY(), 10);
+        assertEq(maths.readZ(), 200);
+    }
+
+    function testDivValues() public {
+        maths.initValues();
+        maths.divideValues();
+        assertEq(maths.readX(), 20);
+        assertEq(maths.readY(), 10);
+        assertEq(maths.readZ(), 2);
+    }
+
+    function testModValues() public {
+        maths.initValues();
+        maths.modValues();
+        assertEq(maths.readX(), 20);
+        assertEq(maths.readY(), 10);
+        assertEq(maths.readZ(), 0);
+    }
 }

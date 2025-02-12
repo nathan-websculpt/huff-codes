@@ -1,6 +1,10 @@
 // interface
 #define function initValues() nonpayable returns()
 #define function addValues() nonpayable returns()
+#define function subValues() nonpayable returns()
+#define function multiplyValues() nonpayable returns()
+#define function divideValues() nonpayable returns()
+#define function modValues() nonpayable returns()
 #define function readX() view returns(uint256)
 #define function readY() view returns(uint256)
 #define function readZ() view returns(uint256)
@@ -14,6 +18,10 @@
 
     dup1 __FUNC_SIG(initValues) eq initValsJump jumpi
     dup1 __FUNC_SIG(addValues) eq addValsJump jumpi
+    dup1 __FUNC_SIG(subValues) eq subValsJump jumpi
+    dup1 __FUNC_SIG(multiplyValues) eq mulValsJump jumpi
+    dup1 __FUNC_SIG(divideValues) eq divValsJump jumpi
+    dup1 __FUNC_SIG(modValues) eq modValsJump jumpi
     dup1 __FUNC_SIG(readX) eq readXJump jumpi
     dup1 __FUNC_SIG(readY) eq readYJump jumpi
     dup1 __FUNC_SIG(readZ) eq readZJump jumpi
@@ -26,6 +34,14 @@
         INIT_VALUES()
     addValsJump:
         ADD_VALUES()
+    subValsJump:
+        SUB_VALUES()
+    mulValsJump:
+        MUL_VALUES()
+    divValsJump:
+        DIV_VALUES()
+    modValsJump:
+        MOD_VALUES()
     readXJump:
         READ_X()
     readYJump:
@@ -62,6 +78,62 @@
     stop
 
     // TODO: stop??
+}
+
+#define macro SUB_VALUES() = takes(0) returns (0) {
+    [Y_STORAGE_SLOT]
+    sload
+    [X_STORAGE_SLOT]
+    sload
+
+    sub
+
+    [Z_STORAGE_SLOT]
+    sstore
+
+    stop
+}
+
+#define macro MUL_VALUES() = takes(0) returns (0) {
+    [Y_STORAGE_SLOT]
+    sload
+    [X_STORAGE_SLOT]
+    sload
+
+    mul
+
+    [Z_STORAGE_SLOT]
+    sstore
+
+    stop
+}
+
+#define macro DIV_VALUES() = takes(0) returns (0) {
+    [Y_STORAGE_SLOT]
+    sload
+    [X_STORAGE_SLOT]
+    sload
+
+    div
+
+    [Z_STORAGE_SLOT]
+    sstore
+
+    stop
+}
+
+#define macro MOD_VALUES() = takes(0) returns (0) {
+    [Y_STORAGE_SLOT]
+    sload
+    [X_STORAGE_SLOT]
+    sload
+
+    mod
+
+    [Z_STORAGE_SLOT]
+    sstore
+
+    stop
 }
 
 #define macro READ_X() = takes(0) returns(0) {

@@ -14,6 +14,22 @@ contract Maths {
     function addValues() external {
         z = x + y;
     }
+    
+    function subValues() public {
+        z = x - y;
+    }
+
+    function multiplyValues() public {
+        z = x * y;
+    }
+
+    function divideValues() public {
+        z = x / y;
+    }
+
+    function modValues() public {
+        z = x % y;
+    }
 
     function readX() external view returns(uint256) {
         return (x);
@@ -26,25 +42,4 @@ contract Maths {
     function readZ() external view returns(uint256) {
         return (z);
     }
-
-    // function subValues() public {
-    //     z = x - y;
-    // }
-
-    // function multiplyValues() public {
-    //     z = x * y;
-    // }
-
-    // function divideValues() public {
-    //     z = x / y;
-    // }
-
-
-    // function modValues() public {
-    //     z = x % y;
-    // }
-
-    // function viewValues() public view returns(uint256, uint256, uint256) {
-    //     return (x, y, z);
-    // }
 }
