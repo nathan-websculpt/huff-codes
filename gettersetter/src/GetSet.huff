@@ -1,0 +1,37 @@
+#define function getVal() view returns (uint256)
+#define function setVal(uint256) nonpayable returns ()
+
+#define constant VAL_STORAGE_SLOT = FREE_STORAGE_POINTER()
+
+#define macro MAIN() = takes(0) returns (0) {
+    0x00 calldataload 0xE0 shr
+
+    dup1 __FUNC_SIG(getVal) eq getJump jumpi
+    dup1 __FUNC_SIG(setVal) eq setJump jumpi
+
+    0x00 0x00 revert
+
+    getJump:
+        GET_VAL()
+    setJump:
+        SET_VAL()
+}
+
+#define macro GET_VAL() = takes(0) returns (0) {
+    [VAL_STORAGE_SLOT]
+    sload               // [val]
+    0x00                // [0, val]
+    mstore              // []
+
+    0x20                // size (32 bytes)
+    0x00                // location in memory
+    return
+}
+
+#define macro SET_VAL() = takes(0) returns (0) {
+    0x04                       // [4]
+    calldataload               // [val] .... calldata minus function_selector
+    [VAL_STORAGE_SLOT]         // [ptr, value] ... storage slot ... 0x00 ... where we are storing our data
+    sstore
+    stop 
+}

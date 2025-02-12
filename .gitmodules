@@ -1,3 +1,6 @@
 [submodule "maths/lib/foundry-huff"]
 	path = maths/lib/foundry-huff
 	url = https://github.com/huff-language/foundry-huff
+[submodule "gettersetter/lib/foundry-huff"]
+	path = gettersetter/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff
