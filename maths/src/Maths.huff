@@ -1,34 +1,90 @@
 // interface
 #define function initValues() nonpayable returns()
 #define function addValues() nonpayable returns()
+#define function readX() view returns(uint256)
+#define function readY() view returns(uint256)
+#define function readZ() view returns(uint256)
 
 #define constant X_STORAGE_SLOT = FREE_STORAGE_POINTER()
 #define constant Y_STORAGE_SLOT = FREE_STORAGE_POINTER()
 #define constant Z_STORAGE_SLOT = FREE_STORAGE_POINTER()
 
-// 60028060093d393df35f35
-// 18 * 4 = 72 // 0x48
 #define macro MAIN() = takes(0) returns(0) {
-    0x00 calldataload 0x48 shr      // [func selector]
+    0x00 calldataload 0xE0 shr      // [func selector]
 
     dup1 __FUNC_SIG(initValues) eq initValsJump jumpi
+    dup1 __FUNC_SIG(addValues) eq addValsJump jumpi
+    dup1 __FUNC_SIG(readX) eq readXJump jumpi
+    dup1 __FUNC_SIG(readY) eq readYJump jumpi
+    dup1 __FUNC_SIG(readZ) eq readZJump jumpi
 
-    __FUNC_SIG(addValues) eq addValsJump jumpi
-
+    // Revert on failed dispatch
+    // 0x00 dup1 revert
     0x00 0x00 revert
 
     initValsJump:
         INIT_VALUES()
     addValsJump:
         ADD_VALUES()
+    readXJump:
+        READ_X()
+    readYJump:
+        READ_Y()
+    readZJump:
+        READ_Z()
+
+    stop
 }
-// 60058060093d393df35f3560481c
 
 #define macro INIT_VALUES() = takes(0) returns(0) {
+    0x14                // 20
+    [X_STORAGE_SLOT]
+    sstore
 
+    0xa                 //10
+    [Y_STORAGE_SLOT]
+    sstore
+
+    stop 
 }
 
 #define macro ADD_VALUES() = takes(0) returns(0) {
+    [X_STORAGE_SLOT]
+    sload
+    [Y_STORAGE_SLOT]
+    sload
 
+    add
+
+    [Z_STORAGE_SLOT]
+    sstore
+
+    stop
+
+    // TODO: stop??
+}
+
+#define macro READ_X() = takes(0) returns(0) {
+    [X_STORAGE_SLOT] sload 0x00 mstore
+    
+    0x20 // the size; 32 bytes getting returned
+    0x00 // its location in memory
+    return
+}
+
+#define macro READ_Y() = takes(0) returns(0) {
+    [Y_STORAGE_SLOT] sload 0x00 mstore
+    
+    0x20 // the size; 32 bytes getting returned
+    0x00 // its location in memory
+    return
+}
+
+#define macro READ_Z() = takes(0) returns(0) {
+    [Z_STORAGE_SLOT] sload 0x00 mstore
+    
+    0x20 // the size; 32 bytes getting returned
+    0x00 // its location in memory
+    return
 }
 

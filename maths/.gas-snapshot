@@ -1,0 +1,4 @@
+MathsHuff:testAddValues() (gas: 79369)
+MathsHuff:testInitValues() (gas: 58484)
+MathsSolc:testAddValues() (gas: 80548)
+MathsSolc:testInitValues() (gas: 59411)

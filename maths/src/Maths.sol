@@ -1,18 +1,30 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity 0.8.28;
 
 contract Maths {
-    uint256 public x;
-    uint256 public y;
-    uint256 public z;
+    uint256 x;
+    uint256 y;
+    uint256 z;
 
-    function initValues() public {
+    function initValues() external {
         x = 20;
         y = 10;
     }
 
-    function addValues() public {
+    function addValues() external {
         z = x + y;
+    }
+
+    function readX() external view returns(uint256) {
+        return (x);
+    }
+
+    function readY() external view returns(uint256) {
+        return (y);
+    }
+
+    function readZ() external view returns(uint256) {
+        return (z);
     }
 
     // function subValues() public {
