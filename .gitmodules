@@ -4,3 +4,6 @@
 [submodule "gettersetter/lib/foundry-huff"]
 	path = gettersetter/lib/foundry-huff
 	url = https://github.com/huff-language/foundry-huff
+[submodule "enum/lib/foundry-huff"]
+	path = enum/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff
