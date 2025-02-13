@@ -1,0 +1,62 @@
+#include "Hashmap.huff"
+
+// interface
+#define function addToMyMapping() nonpayable returns ()
+#define function get(uint256) view returns (uint256)
+#define function counter() view returns (uint256)
+
+#define constant MAPPING_LOCATION = FREE_STORAGE_POINTER()
+#define constant COUNTER_LOCATION = FREE_STORAGE_POINTER()
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0xE0 shr
+
+    dup1 __FUNC_SIG(get) eq getJump jumpi
+    dup1 __FUNC_SIG(addToMyMapping) eq addJump jumpi
+    dup1 __FUNC_SIG(counter) eq counterJump jumpi
+
+    0x00 0x00 revert
+
+    getJump:
+        GET_VAL()
+    addJump:
+        ADD_VAL()
+    counterJump:
+        GET_COUNTER()
+}
+
+// To retrieve a value from a mapping, use the LOAD_ELEMENT_FROM_KEYS macro
+#define macro GET_VAL(uint256) = takes(1) returns(1) {
+    // Assuming key is in calldata at 0x04
+    0x04 calldataload                       // [key]
+    [MAPPING_LOCATION]                      // [MAPPING_LOCATION, key]
+    LOAD_ELEMENT_FROM_KEYS(0x00)            // [value]
+    0x00 mstore                             // Store the value in memory
+    0x20 0x00 return                        // Return the 32-byte value
+}
+
+// To store a value in the mapping, use the STORE_ELEMENT_FROM_KEYS macro
+#define macro ADD_VAL() = takes(0) returns(0) {
+    // the key is the incrementing counter
+    [COUNTER_LOCATION] sload         // [value]
+    [COUNTER_LOCATION] sload        // [key, value]
+    [MAPPING_LOCATION]              // [MAPPING_LOCATION, key, value] 
+    STORE_ELEMENT_FROM_KEYS(0x00)   // takes 3, returns 0
+
+    //increment counter (ex: counter++)
+    [COUNTER_LOCATION] sload
+    0x01
+    add                   // [result of counter + 1]
+    [COUNTER_LOCATION]    // [COUNTER_LOCATION, result]
+    sstore
+}
+
+#define macro GET_COUNTER() = takes(0) returns (1) {
+    [COUNTER_LOCATION]
+    sload
+    0x00
+    mstore
+    0x20
+    0x00
+    return
+}

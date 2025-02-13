@@ -1,0 +1,41 @@
+#define function setChoice(uint8) nonpayable returns ()
+#define function getChoice() view returns (uint8)
+
+#define constant GO_LEFT = 0x00
+#define constant GO_RIGHT = 0x01
+#define constant GO_STRAIGHT = 0x02
+#define constant GO_BACK = 0x03
+#define constant CHOICE_STORAGE_SLOT = FREE_STORAGE_POINTER()
+
+#define macro MAIN() = takes(0) returns (0) {
+    0x00 calldataload 0xE0 shr
+
+    dup1 __FUNC_SIG(setChoice) eq setJump jumpi
+    dup1 __FUNC_SIG(getChoice) eq getJump jumpi
+
+    0x00 0x00 revert
+
+    getJump:
+        GET_CHOICE()
+    setJump:
+        SET_CHOICE()
+}
+
+#define macro GET_CHOICE() = takes(0) returns (0) {
+    [CHOICE_STORAGE_SLOT]
+    sload               // [val]
+    0x00                // [0, val]
+    mstore              // []
+
+    0x20                // size (32 bytes)
+    0x00                // location in memory
+    return
+}
+
+#define macro SET_CHOICE() = takes(0) returns (0) {
+    0x04                       // [4]
+    calldataload               // [val] .... calldata minus function_selector
+    [CHOICE_STORAGE_SLOT]         // [ptr, value] ... storage slot ... 0x00 ... where we are storing our data
+    sstore
+    stop 
+}
