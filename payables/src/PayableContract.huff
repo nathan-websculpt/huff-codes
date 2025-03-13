@@ -1,0 +1,16 @@
+#define function payMe() payable returns ()
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0xE0 shr
+
+    dup1 __FUNC_SIG(payMe) eq payMeJump jumpi
+
+    0x00 0x00 revert
+
+    payMeJump:
+        PAY_ME()
+}
+
+#define macro PAY_ME() = takes(0) returns(0) {
+    
+}
