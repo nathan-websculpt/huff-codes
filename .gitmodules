@@ -10,3 +10,9 @@
 [submodule "mapping/lib/foundry-huff"]
 	path = mapping/lib/foundry-huff
 	url = https://github.com/huff-language/foundry-huff
+[submodule "events/lib/foundry-huff"]
+	path = events/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff
+[submodule "payables/lib/foundry-huff"]
+	path = payables/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff
