@@ -18,15 +18,19 @@
     // Check if msg.value > 0
     0x00      // Push 0 to compare with msg.value
     gt        // Compare msg.value > 0
+    //eq jumpi ...
+
+
+
 
     // If not greater than 0, revert with an error message
     0x1C      // Length of error message
     0x00      // Offset of error message in memory
     0x00      // Memory location to start copying error message
-    MSTORE    // Store "Minimum payment amount not met." in memory
-    PUSH32 0x4D696E696D756D207061796D656E7420616D6F756E74206E6F74206D65742E
+    mstore    // Store "Minimum payment amount not met." in memory
+    0x4D696E696D756D207061796D656E7420616D6F756E74206E6F74206D65742E
                     // Error message: "Minimum payment amount not met."
-    REVERT          // Revert transaction with error message
+    revert          // Revert transaction with error message
 
     // If msg.value > 0, continue execution (do nothing here)
 }
