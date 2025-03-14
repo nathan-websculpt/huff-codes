@@ -20,16 +20,6 @@
     callvalue 
     iszero iszero
     REQUIRE()
-    
-    // error jumpi // revert if msg.value == 0
-    // stop
-    // error:
-    //     0x20                        // [32]
-    //     mstore                      // [] (store length of message at 0x00)
-    //     __RIGHTPAD(0x4d696e696d756d207061796d656e7420616d6f756e74206e6f74206d65742e) // ["Minimum payment amount not met."]
-    //     0x20                        // ["Minimum payment amount not met.", 32]
-    //     mstore                      // [] (store message at 0x20)    
-    //     0x40 0x00 revert
 }
 
 // Input stack:          [condition, message_length, message]

@@ -20,7 +20,13 @@ abstract contract Base_Test is Test {
     }
         
     function test_CannotPayContractWithZero() public {
-        vm.expectRevert("Minimum payment amount not met.");
+        // bytes memory reason = abi.encodeWithSignature("Error(string)", "Minimum payment amount not met.");
+        // vm.expectRevert(reason);
+
+        //vm.expectRevert("Minimum payment amount not met.");
+
+        vm.expectRevert(bytes("Minimum payment amount not met."));
+
         payableContract.payMe{value: 0}();
     }
 }
