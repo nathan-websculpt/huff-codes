@@ -1,5 +1,7 @@
 #define function payMe() payable returns ()
 
+#define error Error(string)
+
 #define macro MAIN() = takes(0) returns(0) {
     0x00 calldataload 0xE0 shr
 
@@ -12,25 +14,44 @@
 }
 
 #define macro PAY_ME() = takes(0) returns(0) {
-    // Load msg.value into stack
-    callvalue
+    // 0x4d696e696d756d207061796d656e7420616d6f756e74206e6f74206d65742e // ["Minimum payment amount not met."]
+    __RIGHTPAD(0x4d696e696d756d207061796d656e7420616d6f756e74206e6f74206d65742e)
+    0x20
+    callvalue 
+    iszero iszero
+    REQUIRE()
+    
+    // error jumpi // revert if msg.value == 0
+    // stop
+    // error:
+    //     0x20                        // [32]
+    //     mstore                      // [] (store length of message at 0x00)
+    //     __RIGHTPAD(0x4d696e696d756d207061796d656e7420616d6f756e74206e6f74206d65742e) // ["Minimum payment amount not met."]
+    //     0x20                        // ["Minimum payment amount not met.", 32]
+    //     mstore                      // [] (store message at 0x20)    
+    //     0x40 0x00 revert
+}
 
-    // Check if msg.value > 0
-    0x00      // Push 0 to compare with msg.value
-    gt        // Compare msg.value > 0
-    //eq jumpi ...
+// Input stack:          [condition, message_length, message]
+#define macro REQUIRE() = takes (3) returns (0) {
+    do_not_throw jumpi        // [message_length, message]
 
+    __ERROR(Error)        // [error_selector, message_length, message]
+    0x00                  // [mem_ptr, error_selector, message_length, message]
+    mstore                // [message_length, message]
+    0x20                  // [message_offset, message_length, message]
+    0x04                  // [message_offset_ptr, message_offset, message_length, message]
+    mstore                // [message_length, message]
+    0x24                  // [message_length_ptr, message_length, message]
+    mstore                // [message]
+    0x44                  // [message_ptr, message]
+    mstore                // []
 
+    0x64                  // [size]
+    0x00                  // [offset, size]
+    revert
 
-
-    // If not greater than 0, revert with an error message
-    0x1C      // Length of error message
-    0x00      // Offset of error message in memory
-    0x00      // Memory location to start copying error message
-    mstore    // Store "Minimum payment amount not met." in memory
-    0x4D696E696D756D207061796D656E7420616D6F756E74206E6F74206D65742E
-                    // Error message: "Minimum payment amount not met."
-    revert          // Revert transaction with error message
-
-    // If msg.value > 0, continue execution (do nothing here)
+    do_not_throw:         // [message_length, message]
+        pop               // [message]   
+        pop               // []
 }
