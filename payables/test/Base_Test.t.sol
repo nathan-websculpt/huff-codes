@@ -19,6 +19,7 @@ abstract contract Base_Test is Test {
         assertEq(address(payableContract).balance, 1 ether);
     }
         
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_CannotPayContractWithZero() public {
         // bytes memory reason = abi.encodeWithSignature("Error(string)", "Minimum payment amount not met.");
         // vm.expectRevert(reason);
@@ -27,6 +28,10 @@ abstract contract Base_Test is Test {
 
         vm.expectRevert(bytes("Minimum payment amount not met."));
 
+
         payableContract.payMe{value: 0}();
+    // (bool revertsAsExpected, ) = address(payableContract).call{value: 0}(abi.encodeWithSignature("payMe()"));
+    // revertsAsExpected = !revertsAsExpected;
+    // assertTrue(revertsAsExpected, "expectRevert: call did not revert");
     }
 }

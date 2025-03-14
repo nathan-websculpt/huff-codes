@@ -24,7 +24,7 @@
 
 // Input stack:          [condition, message_length, message]
 #define macro REQUIRE() = takes (3) returns (0) {
-    do_not_throw jumpi        // [message_length, message]
+    do_not_throw jumpi    // [message_length, message]
 
     __ERROR(Error)        // [error_selector, message_length, message]
     0x00                  // [mem_ptr, error_selector, message_length, message]
