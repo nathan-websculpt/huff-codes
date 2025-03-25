@@ -16,3 +16,6 @@
 [submodule "payables/lib/foundry-huff"]
 	path = payables/lib/foundry-huff
 	url = https://github.com/huff-language/foundry-huff
+[submodule "structs/lib/foundry-huff"]
+	path = structs/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff

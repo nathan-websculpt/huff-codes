@@ -7,6 +7,8 @@ import {HuffDeployer} from "foundry-huff/HuffDeployer.sol";
 //              ffi = true
 //              remappings = ['foundry-huff/=lib/foundry-huff/src']
 
+// TODO: I am just going to have to come back to this -- this is the result of the Huff test: "Minimum payment amount not met. != Minimum payment amount not met."
+
 contract PayableHuff is Base_Test {
     string public constant HUFF_LOCATION = "PayableContract";
     //^^^ assumes you are in /src/, and does NOT look for a '.huff'
