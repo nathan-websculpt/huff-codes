@@ -19,3 +19,6 @@
 [submodule "structs/lib/foundry-huff"]
 	path = structs/lib/foundry-huff
 	url = https://github.com/huff-language/foundry-huff
+[submodule "arrays/lib/foundry-huff"]
+	path = arrays/lib/foundry-huff
+	url = https://github.com/huff-language/foundry-huff
