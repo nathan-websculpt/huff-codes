@@ -1,1 +1,0 @@
-# Simple "Differential Testing" example
