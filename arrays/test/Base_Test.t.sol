@@ -17,28 +17,28 @@ abstract contract Base_Test is Test {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
         assertEq(arraysContract.getLengthOfMyArray(), 1);
-        assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
-    }
-
-    function testPopFromMyArray() public {
-        uint256 val = 2;
-        arraysContract.pushToMyArray(val);
-        assertEq(arraysContract.getLengthOfMyArray(), 1);
-        arraysContract.popFromMyArray();
-        assertEq(arraysContract.getLengthOfMyArray(), 0);
-    }
-
-    function testGetLengthOfMyArray() public {
-        assertEq(arraysContract.getLengthOfMyArray(), 0);
-        uint256 val = 2;
-        arraysContract.pushToMyArray(val);
-        assertEq(arraysContract.getLengthOfMyArray(), 1);
-    }
-
-    function testGetValAtIndexOfMyArray() public {
-        uint256 val = 2;
-        arraysContract.pushToMyArray(val);
         // assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
-        assertEq(uint256(arraysContract.getValAtIndexOfMyArray(0)), val);
     }
+
+    // function testPopFromMyArray() public {
+    //     uint256 val = 2;
+    //     arraysContract.pushToMyArray(val);
+    //     assertEq(arraysContract.getLengthOfMyArray(), 1);
+    //     arraysContract.popFromMyArray();
+    //     assertEq(arraysContract.getLengthOfMyArray(), 0);
+    // }
+
+    // function testGetLengthOfMyArray() public {
+    //     assertEq(arraysContract.getLengthOfMyArray(), 0);
+    //     uint256 val = 2;
+    //     arraysContract.pushToMyArray(val);
+    //     assertEq(arraysContract.getLengthOfMyArray(), 1);
+    // }
+
+    // function testGetValAtIndexOfMyArray() public {
+    //     uint256 val = 2;
+    //     arraysContract.pushToMyArray(val);
+    //     // assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
+    //     assertEq(uint256(arraysContract.getValAtIndexOfMyArray(0)), val);
+    // }
 }

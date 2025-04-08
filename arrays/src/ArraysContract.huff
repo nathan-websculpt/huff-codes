@@ -1,4 +1,5 @@
-#define function pushToMyArray(uint256) nonpayable returns()
+// #define function pushToMyArray(uint256) nonpayable returns()
+#define function pushToMyArray() nonpayable returns()
 #define function popFromMyArray() nonpayable returns()
 #define function getLengthOfMyArray() view returns (uint256)
 // #define function getValAtIndexOfMyArray(uint256) view returns (uint256)
@@ -6,17 +7,17 @@
 
 // started from:
 // https://github.com/Kuly14/Huff-Arrays/blob/main/src/DynamicArray.huff
-#define constant ARRAY = FREE_STORAGE_POINTER()
+#define constant ARRAY_LEN = FREE_STORAGE_POINTER()
 
 
 #define macro GET() = takes(0) returns(0) {
     0x04 calldataload           // [index]
-    [ARRAY]                     // [ARRAY_PTR, index]
+    [ARRAY_LEN]                     // [ARRAY_PTR, index]
     0x00 mstore                 // [index]
     0x20 0x00                   // [memOffset, size, index]
     sha3                        // [hash, index]
 
-    [ARRAY] sload               // [Arr_size, hash, index]
+    [ARRAY_LEN] sload               // [Arr_size, hash, index]
     dup3                        // [index, Arr_size, hash, index]
     gt                          // [index > Arr_size, hash, index]
     outOfBounds
@@ -35,12 +36,12 @@
 
 
 #define macro POP() = takes(0) returns(0) {
-    [ARRAY]                     // [ARRAY_PTR]
+    [ARRAY_LEN]                     // [ARRAY_PTR]
     0x00 mstore                 // []
     0x20 0x00                   // [memOffset, size]
     sha3                        // [hash]
 
-    [ARRAY] sload               // [Array_length, hash]
+    [ARRAY_LEN] sload               // [Array_length, hash]
     0x01 swap1                  // [Array_length, 0x01, hash]
     sub                         // [Array_length - 1, hash]
 
@@ -53,32 +54,44 @@
 
 
 #define macro PUSH() = takes(0) returns(0) {
-    [ARRAY]                     // [ARRAY_PTR]
-    0x00 mstore                 // []
+    // [ARRAY_LEN]                     // [ARRAY_PTR]
+    // 0x00 mstore                 // []
 
-    0x20 0x00                   // [memOffset, size]
-    sha3                        // [hash]
+    // 0x20 0x00                   // [memOffset, size]
+    // sha3                        // [hash]
 
-    [ARRAY] sload               // [length, hash]
+    // [ARRAY_LEN] sload               // [length, hash]
 
-    dup1                        // [length, length, hash]
-    swap2                       // [hash, length, length]
-    add                         // [newStorageSlot, length]
+    // dup1                        // [length, length, hash]
+    // swap2                       // [hash, length, length]
+    // add                         // [newStorageSlot, length]
 
-    0x04 calldataload           // [arg, newStorageSlot, length]
-    swap1                       // [newStorageSlot, arg, length]
+    // 0x04 calldataload           // [arg, newStorageSlot, length]
+    // swap1                       // [newStorageSlot, arg, length]
 
-    sstore                      // [length]
+    // sstore                      // [length]
 
-    0x01 add                    // [0x01 + length]
-    [ARRAY]                     // [newLength, ARRAY_PTR]
-    swap1                       // [ARRAY_PTR, newLength]
-    sstore                      // []
+    // 0x01 add                    // [0x01 + length]
+    // [ARRAY_LEN]                     // [newLength, ARRAY_PTR]
+    // swap1                       // [ARRAY_PTR, newLength]
+    // sstore                      // []
+
+
+    0x04 calldataload            // [num]
+    [ARRAY_LEN] sload            // [length, num]
+    dup1                         // [length, length, num]
+    [ARRAY_LEN] 0x00 mstore 
+    0x20 0x00 sha3               // [base_slot, length, num]
+    add                          // [base_slot+length, num]
+    sstore                       // Store value
+    0x1 add                      // Increment length
+    [ARRAY_LEN] sstore           // Update length
+    stop
 }
 
 
 #define macro LENGTH() = takes(0) returns(0) {
-    [ARRAY] sload               // [ARRAY_LENGTH]
+    [ARRAY_LEN] sload               // [ARRAY_LENGTH]
     0x00 mstore                 // []
 
     0x20 0x00                   // [memOffset, Size]
