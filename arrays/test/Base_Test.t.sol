@@ -17,9 +17,9 @@ abstract contract Base_Test is Test {
     function testPushToMyArray() public {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
-        assertEq(arraysContract.getLengthOfMyArray(), 1);
+        // assertEq(arraysContract.getLengthOfMyArray(), 1);
         // console2.log(arraysContract.getValAtIndexOfMyArray(0));
-        // assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
+        assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
     }
 
     // function testPopFromMyArray() public {

@@ -55,64 +55,26 @@
 
 
 #define macro PUSH() = takes(0) returns(0) {
-    [ARRAY_LEN]                     // [ARRAY_PTR]
-    0x00 mstore                 // []
+    // 0x04 calldataload           // [value]
+    // [ARRAY_LEN] sload           // [length, val]
 
-    0x20 0x00                   // [memOffset, size]
-    sha3                        // [hash]
+    // // Calculate base storage slot (keccak256(0))
+    // 0x00 0x20 mstore           // Store 0 at memory 0x20
+    // 0x20 0x20 sha3             // base_slot = keccak256(0) [1][4]
 
-    [ARRAY_LEN] sload               // [length, hash]
-
-    dup1                        // [length, length, hash]
-    swap2                       // [hash, length, length]
-    add                         // [newStorageSlot, length]
-
-    0x04 calldataload           // [arg, newStorageSlot, length]
-    swap1                       // [newStorageSlot, arg, length]
-
-    sstore                      // [length]
-
-    0x01 add                    // [0x01 + length]
-    [ARRAY_LEN]                     // [newLength, ARRAY_PTR]
-    swap1                       // [ARRAY_PTR, newLength]
-    sstore                      // []
-    stop
-
-
-
-    
-
-
-    // 0x04 calldataload            // [num]
-    // // calldataload            // [num]
-    // [ARRAY_LEN] sload            // [length, num]
-    // dup1                         // [length, length, num]
-    // [ARRAY_LEN] 0x00 mstore 
-    // 0x20 0x00 sha3               // [base_slot, length, num]
-    // add                          // [base_slot+length, num]
-    // sstore                       // Store value
-    // 0x01 add                      // Increment length
-    // [ARRAY_LEN] sstore           // Update length
+    // sstore
     // stop
 
 
 
-//     [ARRAY_LEN] sload           // [length]
-
-//     // Calculate base storage slot (keccak256(0))
-//     0x00 0x20 mstore           // Store 0 at memory 0x20
-//     0x20 0x20 sha3             // base_slot = keccak256(0) [1][4]
-    
-//     // Compute target slot: base_slot + length
-//     dup1 dup3 add              // [target_slot, base_slot, length]
-
-//     0x02                       // [value, target_slot, base_slot, length]
-//     swap1 sstore                // store 2 at target_slot
-//     // Update length (length + 1)
-//     0x01 add                   // [new_length, base_slot]
-//     [ARRAY_LEN] swap1 sstore          // Store updated length at slot 0
-//     pop      
-// stop    
+    // add a single item
+    0x04 calldataload    // [Argument to store]
+    [ARRAY_LEN]      // [StartingSLot, Argument]
+    0x00 mstore          // [Argument]
+    0x20 0x00            // [offset, size, Argument]
+    sha3                 // [HashedStorageSlot, Argument]
+    sstore               // []
+    stop
 }
 
 
