@@ -53,7 +53,7 @@
     sstore                      // [Array_length]
 
     //update array length
-    0x01 swap1 sub              // [0x01 - length]
+    0x01 swap1 sub              // [Array_length - 1]
     [ARRAY_LEN]                 // [ARRAY_PTR, newLength]
     sstore                      // []
     stop
