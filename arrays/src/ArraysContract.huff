@@ -1,9 +1,7 @@
-// #define function pushToMyArray(uint256) nonpayable returns()
 #define function pushToMyArray() nonpayable returns()
 #define function popFromMyArray() nonpayable returns()
 #define function getLengthOfMyArray() view returns (uint256)
 #define function getValAtIndexOfMyArray(uint256) view returns (uint256)
-// #define function getValAtIndexOfMyArray(uint256) view returns (bytes32)
 
 // started from:
 // https://github.com/Kuly14/Huff-Arrays/blob/main/src/DynamicArray.huff
@@ -12,13 +10,12 @@
 
 #define macro GET() = takes(0) returns(0) {
     0x04 calldataload           // [index]
-    // calldataload           // [index]
-    [ARRAY_LEN]                     // [ARRAY_PTR, index]
+    [ARRAY_LEN]                 // [ARRAY_PTR, index]
     0x00 mstore                 // [index]
     0x20 0x00                   // [memOffset, size, index]
     sha3                        // [hash, index]
 
-    [ARRAY_LEN] sload               // [Arr_size, hash, index]
+    [ARRAY_LEN] sload           // [Arr_size, hash, index]
     dup3                        // [index, Arr_size, hash, index]
     gt                          // [index > Arr_size, hash, index]
     outOfBounds
@@ -37,12 +34,12 @@
 
 
 #define macro POP() = takes(0) returns(0) {
-    [ARRAY_LEN]                     // [ARRAY_PTR]
+    [ARRAY_LEN]                 // [ARRAY_PTR]
     0x00 mstore                 // []
     0x20 0x00                   // [memOffset, size]
     sha3                        // [hash]
 
-    [ARRAY_LEN] sload               // [Array_length, hash]
+    [ARRAY_LEN] sload           // [Array_length, hash]
     0x01 swap1                  // [Array_length, 0x01, hash]
     sub                         // [Array_length - 1, hash]
 
@@ -51,37 +48,47 @@
     0x00                        // [0, LastStorageSlot]
     swap1                       // [LastStorageSlot, 0]
     sstore                      // []
+
+    //TODO: dup this earlier
+    [ARRAY_LEN] sload           //[length]
+
+    //update array length
+    0x01 swap1 sub              // [0x01 - length]
+    [ARRAY_LEN]                 // [ARRAY_PTR, newLength]
+    sstore                      // []
+    stop
 }
 
-
-    // adds a single item
 #define macro PUSH() = takes(0) returns(0) {
-    // get value to store
-    0x04 calldataload    // [val]
-    [ARRAY_LEN]          // [first slot, val]
-    0x00                 // [0, first slot, val]
-
     // store slot (ARRAY_LEN) pointer to 0th offset in memory
-    mstore               // [val]
+    [ARRAY_LEN]                 // [ARRAY_PTR]
+    0x00                        // [0, ARRAY_PTR]
+    mstore                      // []
 
+    0x20 0x00                   // [memOffset, size]
+    sha3                        // [hash]
 
-    // store the val to the first slot in storage
-    0x20 0x00            // [offset, size, val]
-    sha3                 // [hashed slot, val]
-    sstore               // []
+    [ARRAY_LEN] sload           // [length, hash]
 
+    dup1                        // [length, length, hash]
+    swap2                       // [hash, length, length]
+    add                         // [newStorageSlot, length]
 
-    // update length
-    [ARRAY_LEN] sload    // [length]
-    0x01 add             // [0x01 + length]
-    [ARRAY_LEN]          // [ARRAY_PTR, new length]
-    sstore               // []
+    0x04 calldataload           // [value, newStorageSlot, length]
+    swap1                       // [newStorageSlot, value, length]
+
+    sstore                      // [length]
+
+    //update array length
+    0x01 add                    // [0x01 + length]
+    [ARRAY_LEN]                 // [ARRAY_PTR, newLength]
+    sstore                      // []
     stop
 }
 
 
 #define macro LENGTH() = takes(0) returns(0) {
-    [ARRAY_LEN] sload               // [ARRAY_LENGTH]
+    [ARRAY_LEN] sload           // [ARRAY_LENGTH]
     0x00 mstore                 // []
 
     0x20 0x00                   // [memOffset, Size]
