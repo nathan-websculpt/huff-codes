@@ -54,9 +54,8 @@
 }
 
 
-#define macro PUSH() = takes(0) returns(0) {
     // adds a single item
-
+#define macro PUSH() = takes(0) returns(0) {
     // get value to store
     0x04 calldataload    // [val]
     [ARRAY_LEN]          // [first slot, val]
@@ -77,9 +76,6 @@
     0x01 add             // [0x01 + length]
     [ARRAY_LEN]          // [ARRAY_PTR, new length]
     sstore               // []
-
-
-
     stop
 }
 
