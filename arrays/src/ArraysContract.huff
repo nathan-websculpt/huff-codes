@@ -55,7 +55,6 @@
 
 
 #define macro PUSH() = takes(0) returns(0) {
-
     // adds a single item
 
     // get value to store
@@ -67,10 +66,20 @@
     mstore               // [val]
 
 
-    // store the val to the first slot
+    // store the val to the first slot in storage
     0x20 0x00            // [offset, size, val]
     sha3                 // [hashed slot, val]
     sstore               // []
+
+
+    // update length
+    [ARRAY_LEN] sload    // [length]
+    0x01 add             // [0x01 + length]
+    [ARRAY_LEN]          // [ARRAY_PTR, new length]
+    sstore               // []
+
+
+
     stop
 }
 
