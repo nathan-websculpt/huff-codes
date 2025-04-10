@@ -74,7 +74,6 @@ abstract contract Base_Test is Test {
     function testGetValAtIndexOfMyArray() public {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
-        // assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
         assertEq(uint256(arraysContract.getValAtIndexOfMyArray(0)), val);
     }
 }
