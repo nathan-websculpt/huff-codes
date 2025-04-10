@@ -13,10 +13,12 @@ abstract contract Base_Test is Test {
         arraysContract = new ArraysContract();
     }
 
+    // forge test --debug --match-test testPushToMyArray --match-path *Huff*
     function testPushToMyArray() public {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
         assertEq(arraysContract.getLengthOfMyArray(), 1);
+        // console2.log(arraysContract.getValAtIndexOfMyArray(0));
         // assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
     }
 

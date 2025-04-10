@@ -2,8 +2,8 @@
 #define function pushToMyArray() nonpayable returns()
 #define function popFromMyArray() nonpayable returns()
 #define function getLengthOfMyArray() view returns (uint256)
-// #define function getValAtIndexOfMyArray(uint256) view returns (uint256)
-#define function getValAtIndexOfMyArray(uint256) view returns (bytes32)
+#define function getValAtIndexOfMyArray(uint256) view returns (uint256)
+// #define function getValAtIndexOfMyArray(uint256) view returns (bytes32)
 
 // started from:
 // https://github.com/Kuly14/Huff-Arrays/blob/main/src/DynamicArray.huff
@@ -12,6 +12,7 @@
 
 #define macro GET() = takes(0) returns(0) {
     0x04 calldataload           // [index]
+    // calldataload           // [index]
     [ARRAY_LEN]                     // [ARRAY_PTR, index]
     0x00 mstore                 // [index]
     0x20 0x00                   // [memOffset, size, index]
@@ -54,39 +55,64 @@
 
 
 #define macro PUSH() = takes(0) returns(0) {
-    // [ARRAY_LEN]                     // [ARRAY_PTR]
-    // 0x00 mstore                 // []
+    [ARRAY_LEN]                     // [ARRAY_PTR]
+    0x00 mstore                 // []
 
-    // 0x20 0x00                   // [memOffset, size]
-    // sha3                        // [hash]
+    0x20 0x00                   // [memOffset, size]
+    sha3                        // [hash]
 
-    // [ARRAY_LEN] sload               // [length, hash]
+    [ARRAY_LEN] sload               // [length, hash]
 
-    // dup1                        // [length, length, hash]
-    // swap2                       // [hash, length, length]
-    // add                         // [newStorageSlot, length]
+    dup1                        // [length, length, hash]
+    swap2                       // [hash, length, length]
+    add                         // [newStorageSlot, length]
 
-    // 0x04 calldataload           // [arg, newStorageSlot, length]
-    // swap1                       // [newStorageSlot, arg, length]
+    0x04 calldataload           // [arg, newStorageSlot, length]
+    swap1                       // [newStorageSlot, arg, length]
 
-    // sstore                      // [length]
+    sstore                      // [length]
 
-    // 0x01 add                    // [0x01 + length]
-    // [ARRAY_LEN]                     // [newLength, ARRAY_PTR]
-    // swap1                       // [ARRAY_PTR, newLength]
-    // sstore                      // []
-
-
-    0x04 calldataload            // [num]
-    [ARRAY_LEN] sload            // [length, num]
-    dup1                         // [length, length, num]
-    [ARRAY_LEN] 0x00 mstore 
-    0x20 0x00 sha3               // [base_slot, length, num]
-    add                          // [base_slot+length, num]
-    sstore                       // Store value
-    0x1 add                      // Increment length
-    [ARRAY_LEN] sstore           // Update length
+    0x01 add                    // [0x01 + length]
+    [ARRAY_LEN]                     // [newLength, ARRAY_PTR]
+    swap1                       // [ARRAY_PTR, newLength]
+    sstore                      // []
     stop
+
+
+
+    
+
+
+    // 0x04 calldataload            // [num]
+    // // calldataload            // [num]
+    // [ARRAY_LEN] sload            // [length, num]
+    // dup1                         // [length, length, num]
+    // [ARRAY_LEN] 0x00 mstore 
+    // 0x20 0x00 sha3               // [base_slot, length, num]
+    // add                          // [base_slot+length, num]
+    // sstore                       // Store value
+    // 0x01 add                      // Increment length
+    // [ARRAY_LEN] sstore           // Update length
+    // stop
+
+
+
+//     [ARRAY_LEN] sload           // [length]
+
+//     // Calculate base storage slot (keccak256(0))
+//     0x00 0x20 mstore           // Store 0 at memory 0x20
+//     0x20 0x20 sha3             // base_slot = keccak256(0) [1][4]
+    
+//     // Compute target slot: base_slot + length
+//     dup1 dup3 add              // [target_slot, base_slot, length]
+
+//     0x02                       // [value, target_slot, base_slot, length]
+//     swap1 sstore                // store 2 at target_slot
+//     // Update length (length + 1)
+//     0x01 add                   // [new_length, base_slot]
+//     [ARRAY_LEN] swap1 sstore          // Store updated length at slot 0
+//     pop      
+// stop    
 }
 
 
