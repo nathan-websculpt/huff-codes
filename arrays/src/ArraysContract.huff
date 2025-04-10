@@ -55,24 +55,21 @@
 
 
 #define macro PUSH() = takes(0) returns(0) {
-    // 0x04 calldataload           // [value]
-    // [ARRAY_LEN] sload           // [length, val]
 
-    // // Calculate base storage slot (keccak256(0))
-    // 0x00 0x20 mstore           // Store 0 at memory 0x20
-    // 0x20 0x20 sha3             // base_slot = keccak256(0) [1][4]
+    // adds a single item
 
-    // sstore
-    // stop
+    // get value to store
+    0x04 calldataload    // [val]
+    [ARRAY_LEN]          // [first slot, val]
+    0x00                 // [0, first slot, val]
+
+    // store slot (ARRAY_LEN) pointer to 0th offset in memory
+    mstore               // [val]
 
 
-
-    // add a single item
-    0x04 calldataload    // [Argument to store]
-    [ARRAY_LEN]      // [StartingSLot, Argument]
-    0x00 mstore          // [Argument]
-    0x20 0x00            // [offset, size, Argument]
-    sha3                 // [HashedStorageSlot, Argument]
+    // store the val to the first slot
+    0x20 0x00            // [offset, size, val]
+    sha3                 // [hashed slot, val]
     sstore               // []
     stop
 }
