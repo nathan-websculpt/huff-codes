@@ -40,17 +40,17 @@
     sha3                        // [hash]
 
     [ARRAY_LEN] sload           // [Array_length, hash]
-    0x01 swap1                  // [Array_length, 0x01, hash]
-    sub                         // [Array_length - 1, hash]
+    dup1                        // [Array_length, Array_length, hash]
+    swap2                       // [Array_length, hash, Array_length]
+    0x01                        // [0x01, Array_length, hash, Array_length]
+    swap1                       // [Array_length, 0x01, hash, Array_length]
+    sub                         // [Array_length - 1, hash, Array_length]
 
-    add                         // [Last_item + hash]
+    add                         // [Last_item + hash, Array_length]
 
-    0x00                        // [0, LastStorageSlot]
-    swap1                       // [LastStorageSlot, 0]
-    sstore                      // []
-
-    //TODO: dup this earlier
-    [ARRAY_LEN] sload           //[length]
+    0x00                        // [0, LastStorageSlot, Array_length]
+    swap1                       // [LastStorageSlot, 0, Array_length]
+    sstore                      // [Array_length]
 
     //update array length
     0x01 swap1 sub              // [0x01 - length]
