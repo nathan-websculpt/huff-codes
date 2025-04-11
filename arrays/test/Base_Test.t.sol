@@ -13,6 +13,11 @@ abstract contract Base_Test is Test {
         arraysContract = new ArraysContract();
     }
 
+    function testArrayStartsEmpty() public {
+        assertEq(arraysContract.getLengthOfMyArray(), 0);
+        assertEq(arraysContract.getValAtIndexOfMyArray(0), 0);
+    }
+
     // forge test --debug --match-test testPushToMyArray --match-path *Huff*
     function testPushToMyArray() public {
         uint256 val = 2;
@@ -36,14 +41,15 @@ abstract contract Base_Test is Test {
         assertEq(arraysContract.getValAtIndexOfMyArray(2), val3);
     }
 
+    // forge test --debug --match-test testPopFromMyArray --match-path *Huff*
     function testPopFromMyArray() public {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
         assertEq(arraysContract.getLengthOfMyArray(), 1);
         assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
         arraysContract.popFromMyArray();
-        assertEq(arraysContract.getValAtIndexOfMyArray(0), 0);
         assertEq(arraysContract.getLengthOfMyArray(), 0);
+        assertEq(arraysContract.getValAtIndexOfMyArray(0), 0);
     }
 
     function testMultiplePopsFromMyArray() public {
@@ -57,11 +63,11 @@ abstract contract Base_Test is Test {
         assertEq(arraysContract.getValAtIndexOfMyArray(1), val2);
 
         arraysContract.popFromMyArray();
-        assertEq(arraysContract.getValAtIndexOfMyArray(1), 0);
         assertEq(arraysContract.getLengthOfMyArray(), 1);
+        assertEq(arraysContract.getValAtIndexOfMyArray(1), 0);
         arraysContract.popFromMyArray();
-        assertEq(arraysContract.getValAtIndexOfMyArray(0), 0);
         assertEq(arraysContract.getLengthOfMyArray(), 0);
+        assertEq(arraysContract.getValAtIndexOfMyArray(0), 0);
     }
 
     function testGetLengthOfMyArray() public {
@@ -74,6 +80,6 @@ abstract contract Base_Test is Test {
     function testGetValAtIndexOfMyArray() public {
         uint256 val = 2;
         arraysContract.pushToMyArray(val);
-        assertEq(uint256(arraysContract.getValAtIndexOfMyArray(0)), val);
+        assertEq(arraysContract.getValAtIndexOfMyArray(0), val);
     }
 }

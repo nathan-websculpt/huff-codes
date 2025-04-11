@@ -15,9 +15,9 @@
     0x20 0x00                   // [memOffset, size, index]
     sha3                        // [hash, index]
 
-    [ARRAY_LEN] sload           // [Arr_size, hash, index]
-    dup3                        // [index, Arr_size, hash, index]
-    gt                          // [index > Arr_size, hash, index]
+    [ARRAY_LEN] sload           // [Array_length, hash, index]
+    dup3                        // [index, Array_length, hash, index]
+    gt                          // [index > Array_length, hash, index]
     outOfBounds
     jumpi                       // [hash, index]
 
@@ -34,12 +34,16 @@
 
 
 #define macro POP() = takes(0) returns(0) {
+    // store slot (ARRAY_LEN) pointer to 0th offset in memory
     [ARRAY_LEN]                 // [ARRAY_PTR]
-    0x00 mstore                 // []
+    0x00                        // [0, ARRAY_PTR]
+    mstore                      // []
+    
     0x20 0x00                   // [memOffset, size]
     sha3                        // [hash]
 
     [ARRAY_LEN] sload           // [Array_length, hash]
+
     dup1                        // [Array_length, Array_length, hash]
     swap2                       // [Array_length, hash, Array_length]
     0x01                        // [0x01, Array_length, hash, Array_length]
@@ -68,19 +72,19 @@
     0x20 0x00                   // [memOffset, size]
     sha3                        // [hash]
 
-    [ARRAY_LEN] sload           // [length, hash]
+    [ARRAY_LEN] sload           // [Array_length, hash]
 
-    dup1                        // [length, length, hash]
-    swap2                       // [hash, length, length]
-    add                         // [newStorageSlot, length]
+    dup1                        // [Array_length, Array_length, hash]
+    swap2                       // [hash, Array_length, Array_length]
+    add                         // [newStorageSlot, Array_length]
 
-    0x04 calldataload           // [value, newStorageSlot, length]
-    swap1                       // [newStorageSlot, value, length]
+    0x04 calldataload           // [value, newStorageSlot, Array_length]
+    swap1                       // [newStorageSlot, value, Array_length]
 
-    sstore                      // [length]
+    sstore                      // [Array_length]
 
     //update array length
-    0x01 add                    // [0x01 + length]
+    0x01 add                    // [0x01 + Array_length]
     [ARRAY_LEN]                 // [ARRAY_PTR, newLength]
     sstore                      // []
     stop
