@@ -32,7 +32,7 @@
         revert
 }
 
-
+// TODO: why does the sub on line 51 look wrong? Why does subtracting 1 from the hash seem wrong?
 #define macro POP() = takes(0) returns(0) {
     // store slot (ARRAY_LEN) pointer to 0th offset in memory
     [ARRAY_LEN]                 // [ARRAY_PTR]
