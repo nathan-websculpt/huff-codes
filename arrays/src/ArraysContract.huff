@@ -38,19 +38,19 @@
     [ARRAY_LEN]                 // [ARRAY_PTR]
     0x00                        // [0, ARRAY_PTR]
     mstore                      // []
-    
+
     0x20 0x00                   // [memOffset, size]
     sha3                        // [hash]
 
     [ARRAY_LEN] sload           // [Array_length, hash]
 
     dup1                        // [Array_length, Array_length, hash]
-    swap2                       // [Array_length, hash, Array_length]
-    0x01                        // [0x01, Array_length, hash, Array_length]
-    swap1                       // [Array_length, 0x01, hash, Array_length]
-    sub                         // [Array_length - 1, hash, Array_length]
+    swap2                       // [hash, Array_length, Array_length]
+    0x01                        // [0x01, hash, Array_length, Array_length]
+    swap1                       // [hash, 0x01, Array_length, Array_length]
+    sub                         // [hash - 0x01, Array_length, Array_length]
 
-    add                         // [Last_item + hash, Array_length]
+    add                         // [LastStorageSlot, Array_length]
 
     0x00                        // [0, LastStorageSlot, Array_length]
     swap1                       // [LastStorageSlot, 0, Array_length]
