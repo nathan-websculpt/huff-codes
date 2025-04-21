@@ -13,8 +13,10 @@ abstract contract Base_Test is Test {
         structsContract = new StructsContract();
     }
 
-    function test_ConstructedWithStructs() public {
-        StructsContract.MainStruct[] memory structs = structsContract.getStructs();
-        assertEq(structs.length, 2);
+    function test_SetStruct() public {
+        structsContract.setter();
+        StructsContract.MainStruct memory myStruct = structsContract.getter();
+        assertEq(myStruct.num, 1);
+        assert(myStruct.flag);
     }
 }

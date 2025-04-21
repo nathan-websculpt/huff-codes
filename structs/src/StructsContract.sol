@@ -3,40 +3,17 @@ pragma solidity 0.8.28;
 
 contract StructsContract {
     struct MainStruct {
-        uint256 numone;
-        uint256 numtwo;
-        string str;
+        uint256 num;
+        bool flag;
     }
 
-    MainStruct[] public listStructs;
+    MainStruct public myStruct;
 
-    constructor() {
-        MainStruct memory firstStruct = MainStruct ({
-            numone: 500,
-            numtwo: 600,
-            str: "test one"
-        });
-
-        listStructs.push(firstStruct);
-
-
-        MainStruct memory secondStruct = MainStruct ({
-            numone: 1500,
-            numtwo: 1600,
-            str: "test two"
-        });
-        
-        listStructs.push(secondStruct);
+    function setter() external {
+        myStruct = MainStruct({num: 1, flag: true});
     }
 
-    function getStructs() external view returns (MainStruct[] memory) {
-        MainStruct[] memory result = new MainStruct[](listStructs.length);
-		for (uint256 i = 0; i < listStructs.length; i++) {
-			result[i] = listStructs[i];
-		}
-		return result;
+    function getter() external view returns (MainStruct memory) {
+        return myStruct;
     }
 }
-
-
-
