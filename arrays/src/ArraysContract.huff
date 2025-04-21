@@ -48,8 +48,8 @@
     mstore                         // [0x00, ARRAY_PTR, length_sub_one]
 
     // get hash of 0th offset, 32 bytes forward
-    0x20                           // [0x20, 0x00, ARRAY_PTR, length_sub_one]
-    0x00                           // [0x00, 0x20, 0x00, ARRAY_PTR, length_sub_one]
+    0x20                           // [size, 0x00, ARRAY_PTR, length_sub_one]
+    0x00                           // [memOffset, size, 0x00, ARRAY_PTR, length_sub_one]
     sha3                           // [hash, 0x00, ARRAY_PTR, length_sub_one]
 
     dup4                           // [length_sub_one, hash, 0x00, ARRAY_PTR, length_sub_one]
