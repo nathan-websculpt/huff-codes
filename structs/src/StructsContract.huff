@@ -1,1 +1,29 @@
-// #define function getStructs view returns()
+#define function setter() nonpayable returns()
+#define function getter() view returns(??)
+
+#define constant STRUCT_PTR = FREE_STORAGE_POINTER()
+
+#define macro GET() = takes(0) returns(0) {
+
+}
+
+#define macro SET() = takes(0) returns(0) {
+    
+}
+
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 calldataload 0xE0 shr
+
+    dup1 __FUNC_SIG(getter) eq getterJump jumpi
+    dup1 __FUNC_SIG(setter) eq setterJump jumpi
+
+    getterJump:
+        GET()
+    setterJump:
+        SET()
+
+    0x00 0x00
+    revert
+}
+

@@ -9,11 +9,11 @@ contract StructsContract {
 
     MainStruct public myStruct;
 
-    function setter() external {
-        myStruct = MainStruct({num: 1, flag: true});
-    }
-
     function getter() external view returns (MainStruct memory) {
         return myStruct;
+    }
+
+    function setter() external {
+        myStruct = MainStruct({num: 1, flag: true});
     }
 }
